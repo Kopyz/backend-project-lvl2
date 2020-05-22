@@ -1,0 +1,25 @@
+{
+  "name": "backend-project-lvl2",
+  "version": "0.1.0",
+  "description": "Compares two configuration files and shows a differnce.",
+  "main": "index.js",
+  "bin": {
+    "gendiff": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kopyz/backend-project-lvl2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kopyz/backend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/Kopyz/backend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^5.1.0"
+  }
+}
