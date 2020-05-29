@@ -7,7 +7,9 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,14 @@
   "homepage": "https://github.com/Kopyz/backend-project-lvl2#readme",
   "dependencies": {
     "commander": "^5.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.1",
+    "@babel/node": "^7.10.1",
+    "@babel/preset-env": "^7.10.1",
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
   }
 }
