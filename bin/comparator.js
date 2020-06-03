@@ -25,3 +25,5 @@ const compare = (pathToFile1, pathToFile2) => {
     }
   });
 };
+
+export default compare;
