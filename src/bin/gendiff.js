@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import compare from '../comparator';
 
-
 const program = require('commander');
 
 program
