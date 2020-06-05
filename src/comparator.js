@@ -5,6 +5,7 @@ const process = require('process');
 const path = require('path');
 
 const compare = (pathToFile1, pathToFile2) => {
+  const resultData = [];
   const currentDir = process.cwd();
   const absolutePathFile1 = path.resolve(currentDir, pathToFile1);
   const absolutePathFile2 = path.resolve(currentDir, pathToFile2);
@@ -14,16 +15,17 @@ const compare = (pathToFile1, pathToFile2) => {
 
   keys.forEach((key) => {
     if (file2[key] === file1[key]) {
-      console.log(`${key}: ${file1[key]}`);
+      resultData.push(`${key}: ${file1[key]}`);
     } else if (file1[key] === undefined) {
-      console.log(`+ ${key}: ${file2[key]}`);
+      resultData.push(`+ ${key}: ${file2[key]}`);
     } else if (file2[key] === undefined) {
-      console.log(`- ${key}: ${file1[key]}`);
+      resultData.push(`- ${key}: ${file1[key]}`);
     } else if (file2[key] !== file1[key]) {
-      console.log(`+ ${key}: ${file2[key]}`);
-      console.log(`- ${key}: ${file1[key]}`);
+      resultData.push(`+ ${key}: ${file2[key]}`);
+      resultData.push(`- ${key}: ${file1[key]}`);
     }
   });
+  return resultData;
 };
 
 export default compare;
