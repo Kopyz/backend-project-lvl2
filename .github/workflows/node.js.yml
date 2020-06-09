@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-
+ 
     steps:
         # Check-out repository under GitHub workspace
         # https://github.com/actions/checkout
@@ -26,6 +26,13 @@ jobs:
         # The Node.js version to configure
         with:
           node-version: ${{ matrix.node-version }}
+      - name: npm install, build
+        # Install and build project
+        run: |
+          make install
+        # Add environment variables
+        env:
+          CI: true
       - name: Run linter
         # Run Linter
         run: |
