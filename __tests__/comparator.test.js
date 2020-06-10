@@ -18,8 +18,8 @@ const expected3 = [
   '+ timeout: 20',
   '- timeout: 50',
   '- proxy: 123.234.53.22',
-  '+ verbose: true',
   '- follow: false',
+  '+ verbose: true',
 ];
 test('diff_1', () => {
   expect(compare(makePath('before.json'), makePath('afterEmpty.json'))).toEqual(expected1);
