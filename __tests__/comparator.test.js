@@ -4,9 +4,9 @@ import makePath from '../src/pathMaker';
 
 const fs = require('fs');
 
-const expected1 = JSON.parse(fs.readFileSync('../__fixtures__/jsonTestSample-1', 'ascii'));
-const expected2 = JSON.parse(fs.readFileSync('../__fixtures__/jsonTestSample-2', 'ascii'));
-const expected3 = JSON.parse(fs.readFileSync('../__fixtures__/jsonTestSample-3', 'ascii'));
+const expected1 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-1'), 'ascii'));
+const expected2 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-2'), 'ascii'));
+const expected3 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-3'), 'ascii'));
 
 test('diff_1', () => {
   expect(compare(makePath('before.json'), makePath('afterEmpty.json'))).toEqual(expected1);
