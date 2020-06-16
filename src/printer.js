@@ -1,4 +1,4 @@
-const printDiffJSON = (data) => {
+const printDiff = (data) => {
   console.log('{');
   data.forEach((current) => {
     if (current[0] === '+' || current[0] === '-') {

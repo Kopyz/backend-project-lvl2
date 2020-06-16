@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import compare from '../comparator';
-import printDiffJSON from '../printer';
+import printDiff from '../printer';
 
 const program = require('commander');
 
@@ -10,7 +10,7 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
     const data = compare(filepath1, filepath2);
-    printDiffJSON(data);
+    printDiff(data);
   })
   .option('-f, --format [type]', 'output format')
   .parse(process.argv);
