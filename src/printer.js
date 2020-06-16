@@ -10,4 +10,4 @@ const printDiff = (data) => {
   console.log('}');
 };
 
-export default printDiffJSON;
+export default printDiff;
