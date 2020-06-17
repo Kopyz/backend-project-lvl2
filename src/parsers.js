@@ -11,7 +11,7 @@ const parse = (file) => {
   if (format === '.json') {
     return JSON.parse(fs.readFileSync(absolutePathFile, 'ascii'));
   }
-  if (format === '.yml') {
+  if (format === '.yaml') {
     return yaml.safeLoad(fs.readFileSync(absolutePathFile, 'ascii'));
   }
   return null;
