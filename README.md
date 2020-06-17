@@ -4,5 +4,36 @@
 
 ## Usage:
 
+1. Difference between ***before.json***
+```
+{
+  "host": "hexlet.io",
+  "timeout": 50,
+  "proxy": "123.234.53.22",
+  "follow": false
+}
+```
+and **after.json**
+```
+{
+  "timeout": 20,
+  "verbose": true,
+  "host": "hexlet.io"
+}
+```
 [![asciicast](https://asciinema.org/a/zzTY4kT1mrCHhXGvB1jaoi9Gp.png)](https://asciinema.org/a/zzTY4kT1mrCHhXGvB1jaoi9Gp)
 
+2. Difference between **before.yaml**
+```
+host: hexlet.io
+timeout: 50
+proxy: 123.234.53.22
+follow: false
+```
+and **after.yaml**
+```
+timeout: 20
+verbose: true
+host: hexlet.io
+```
+[![asciicast](https://asciinema.org/a/Lr2bw6XzzRZkHTU7ZLOt7AJYm.png)](https://asciinema.org/a/Lr2bw6XzzRZkHTU7ZLOt7AJYm)
