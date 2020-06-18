@@ -19,3 +19,9 @@ test('diff_yaml', () => {
   expect(compare(makePath('empty.yaml'), makePath('after.yaml'))).toEqual(expected2);
   expect(compare(makePath('before.yaml'), makePath('after.yaml'))).toEqual(expected3);
 });
+
+test('diff_ini', () => {
+  expect(compare(makePath('before.ini'), makePath('empty.ini'))).toEqual(expected1);
+  expect(compare(makePath('empty.ini'), makePath('after.ini'))).toEqual(expected2);
+  expect(compare(makePath('before.ini'), makePath('after.ini'))).toEqual(expected3);
+});
