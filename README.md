@@ -13,7 +13,7 @@
   "follow": false
 }
 ```
-and **after.json**
+   and **after.json**
 ```
 {
   "timeout": 20,
@@ -30,10 +30,25 @@ timeout: 50
 proxy: 123.234.53.22
 follow: false
 ```
-and **after.yaml**
+   and **after.yaml**
 ```
 timeout: 20
 verbose: true
 host: hexlet.io
 ```
 [![asciicast](https://asciinema.org/a/Lr2bw6XzzRZkHTU7ZLOt7AJYm.png)](https://asciinema.org/a/Lr2bw6XzzRZkHTU7ZLOt7AJYm)
+
+3. Difference between **before.ini**
+```
+host=hexlet.io
+timeout=50
+proxy=123.234.53.22
+follow=false
+```
+   and **after.ini**
+```
+timeout=20
+verbose=true
+host=hexlet.io
+```
+[![asciicast](https://asciinema.org/a/1WSgDf1V6mrrlAsom8KlrNV9M.png)](https://asciinema.org/a/1WSgDf1V6mrrlAsom8KlrNV9M)
