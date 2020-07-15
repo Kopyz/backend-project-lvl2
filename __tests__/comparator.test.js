@@ -1,5 +1,5 @@
 
-import compare from '../src/comparator';
+import generateRecursiveDiff  from '../src/comparator';
 import makePath from '../src/pathMaker';
 
 const fs = require('fs');
@@ -9,19 +9,20 @@ const expected2 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-2'), 'asci
 const expected3 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-3'), 'ascii'));
 
 test('diff_JSON', () => {
-  expect(compare(makePath('before.json'), makePath('afterEmpty.json'))).toEqual(expected1);
-  expect(compare(makePath('beforeEmpty.json'), makePath('after.json'))).toEqual(expected2);
-  expect(compare(makePath('before.json'), makePath('after.json'))).toEqual(expected3);
+  expect(generateRecursiveDiff(makePath('before.json'), makePath('afterEmpty.json'))).toEqual(expected1);
+  expect(generateRecursiveDiff(makePath('beforeEmpty.json'), makePath('after.json'))).toEqual(expected2);
+  expect(generateRecursiveDiff(makePath('before.json'), makePath('after.json'))).toEqual(expected3);
+  expect(generateRecursiveDiff(makePath('before-tree.json'), makePath('after-tree.json'))).toEqual(expected3);
 });
 
 test('diff_yaml', () => {
-  expect(compare(makePath('before.yaml'), makePath('empty.yaml'))).toEqual(expected1);
-  expect(compare(makePath('empty.yaml'), makePath('after.yaml'))).toEqual(expected2);
-  expect(compare(makePath('before.yaml'), makePath('after.yaml'))).toEqual(expected3);
+  expect(generateRecursiveDiff(makePath('before.yaml'), makePath('empty.yaml'))).toEqual(expected1);
+  expect(generateRecursiveDiff(makePath('empty.yaml'), makePath('after.yaml'))).toEqual(expected2);
+  expect(generateRecursiveDiff(makePath('before.yaml'), makePath('after.yaml'))).toEqual(expected3);
 });
 
 test('diff_ini', () => {
-  expect(compare(makePath('before.ini'), makePath('empty.ini'))).toEqual(expected1);
-  expect(compare(makePath('empty.ini'), makePath('after.ini'))).toEqual(expected2);
-  expect(compare(makePath('before.ini'), makePath('after.ini'))).toEqual(expected3);
+  expect(generateRecursiveDiff(makePath('before.ini'), makePath('empty.ini'))).toEqual(expected1);
+  expect(generateRecursiveDiff(makePath('empty.ini'), makePath('after.ini'))).toEqual(expected2);
+  expect(generateRecursiveDiff(makePath('before.ini'), makePath('after.ini'))).toEqual(expected3);
 });
