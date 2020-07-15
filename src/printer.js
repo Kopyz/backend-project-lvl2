@@ -18,7 +18,7 @@ const stylish = (tree, level = 1) => {
   keys.map((key) => {
     if (_.isObject(tree[key])) {
       console.log(`${whitespaces.repeat(level)}${key}: {`);
-      return printRecursiveDiff(tree[key], level + 2);
+      return stylish(tree[key], level + 2);
     }
     console.log(`${whitespaces.repeat(level)}${key}: ${tree[key]}`);
     return undefined;
