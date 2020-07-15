@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import compare from '../comparator';
-import printDiff from '../printer';
+import { generateRecursiveDiff } from '../comparator';
+import { stylish } from '../printer';
 
 const program = require('commander');
 
@@ -9,8 +9,8 @@ program
   .description('Compares two configuration files and shows a difference.')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    const data = compare(filepath1, filepath2);
-    printDiff(data);
+    const data = generateRecursiveDiff(filepath1, filepath2);
+    stylish(data);
   })
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', stylish)
   .parse(process.argv);
