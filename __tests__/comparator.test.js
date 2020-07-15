@@ -1,5 +1,5 @@
 
-import generateRecursiveDiff  from '../src/comparator';
+import generateRecursiveDiff from '../src/comparator';
 import makePath from '../src/pathMaker';
 
 const fs = require('fs');
