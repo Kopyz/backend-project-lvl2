@@ -24,6 +24,7 @@ const compare = (pathToFile1, pathToFile2) => {
 
 const checkKeyPresence = (tree, key) => Object.prototype.hasOwnProperty.call(tree, key);
 
+
 const generateRecursiveDiff = (tree1, tree2) => {
   const data1 = parse(tree1);
   const data2 = parse(tree2);
