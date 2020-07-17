@@ -37,6 +37,12 @@ const generateRecursiveDiff = (tree1, tree2) => {
       const value1 = file1[key];
       const value2 = file2[key];
 
+      if (!_.isObject(value1) && checkKeyPresence(file1, key)
+        && checkKeyPresence(file2, key) && _.isObject(value2)) {
+        acc[`- ${key}`] = iter(value2, value2);
+        acc[`+ ${key}`] = value1;
+        return acc;
+      }
       if (_.isObject(value1) && checkKeyPresence(file1, key)
         && checkKeyPresence(file2, key) && !_.isObject(value2)) {
         acc[`- ${key}`] = iter(value1, value1);
