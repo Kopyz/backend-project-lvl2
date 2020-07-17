@@ -12,13 +12,13 @@ const printDiff = (data) => {
   console.log('}');
 };
 
-const stylish = (tree, level = 1) => {
+const printDiffTree = (tree, level = 1) => {
   const keys = Object.keys(tree);
   const whitespaces = '  ';
   keys.map((key) => {
     if (_.isObject(tree[key])) {
       console.log(`${whitespaces.repeat(level)}${key}: {`);
-      return stylish(tree[key], level + 2);
+      return printDiffTree(tree[key], level + 2);
     }
     console.log(`${whitespaces.repeat(level)}${key}: ${tree[key]}`);
     return undefined;
@@ -27,6 +27,12 @@ const stylish = (tree, level = 1) => {
     console.log(`${whitespaces.repeat(level - 1)}}`);
   }
   return undefined;
+};
+
+const stylish = (tree) => {
+  console.log('{');
+  printDiffTree(tree);
+  console.log('}');
 };
 
 export { printDiff, stylish };
