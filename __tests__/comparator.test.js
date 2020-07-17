@@ -8,6 +8,9 @@ const expected1 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-1'), 'asci
 const expected2 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-2'), 'ascii'));
 const expected3 = JSON.parse(fs.readFileSync(makePath('jsonTestSample-3'), 'ascii'));
 const expected4 = JSON.parse(fs.readFileSync(makePath('jsonTreeTest'), 'ascii'));
+const iniExpected1 = JSON.parse(fs.readFileSync(makePath('iniTestSample1'), 'ascii'));
+const iniExpected2 = JSON.parse(fs.readFileSync(makePath('iniTestSample2'), 'ascii'));
+const iniExpected3 = JSON.parse(fs.readFileSync(makePath('iniTestSample3'), 'ascii'));
 
 test('diff_JSON', () => {
   expect(generateRecursiveDiff(makePath('before.json'), makePath('afterEmpty.json'))).toEqual(expected1);
@@ -23,7 +26,7 @@ test('diff_yaml', () => {
 });
 
 test('diff_ini', () => {
-  expect(generateRecursiveDiff(makePath('before.ini'), makePath('empty.ini'))).toEqual(expected1);
-  expect(generateRecursiveDiff(makePath('empty.ini'), makePath('after.ini'))).toEqual(expected2);
-  expect(generateRecursiveDiff(makePath('before.ini'), makePath('after.ini'))).toEqual(expected3);
+  expect(generateRecursiveDiff(makePath('before.ini'), makePath('empty.ini'))).toEqual(iniExpected1);
+  expect(generateRecursiveDiff(makePath('empty.ini'), makePath('after.ini'))).toEqual(iniExpected2);
+  expect(generateRecursiveDiff(makePath('before.ini'), makePath('after.ini'))).toEqual(iniExpected3);
 });
