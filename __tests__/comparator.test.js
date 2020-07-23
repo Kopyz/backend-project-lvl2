@@ -8,7 +8,7 @@ const fs = require('fs');
 const expected1 = fs.readFileSync(makePath('testSample-1'), 'ascii');
 const expected2 = fs.readFileSync(makePath('testSample-2'), 'ascii');
 const expected3 = fs.readFileSync(makePath('testSample-3'), 'ascii');
-const expected4 = fs.readFileSync(makePath('treeTestSample'), 'ascii');
+const expected4 = fs.readFileSync(makePath('testTreeSample'), 'ascii');
 
 test('diff_JSON', () => {
   expect(stylish(generateRecursiveDiff(makePath('before.json'), makePath('empty.json')))).toEqual(expected1);
