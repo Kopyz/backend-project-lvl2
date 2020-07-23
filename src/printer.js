@@ -37,9 +37,9 @@ const printDiffTree = (tree, level = 1) => {
 };
 
 const stylish = (tree) => {
-  fs.writeFileSync('../__fixtures__/result', '{');
+  fs.writeFileSync(resultFilePath, '{');
   printDiffTree(tree);
-  fs.appendFileSync('../__fixtures__/result', makeStr('}'));
+  fs.appendFileSync(resultFilePath, makeStr('}'));
   console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
 
