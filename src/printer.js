@@ -1,4 +1,11 @@
 import _ from 'lodash';
+import getFixturePath from './pathMaker';
+
+const fs = require('fs');
+
+const resultFilePath = getFixturePath('result');
+
+const makeStr = (str) => `\n${str}`;
 
 const printDiff = (data) => {
   console.log('{');
@@ -17,22 +24,23 @@ const printDiffTree = (tree, level = 1) => {
   const whitespaces = '  ';
   keys.map((key) => {
     if (_.isObject(tree[key])) {
-      console.log(`${whitespaces.repeat(level)}${key}: {`);
+      fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level)}${key}: {`));
       return printDiffTree(tree[key], level + 2);
     }
-    console.log(`${whitespaces.repeat(level)}${key}: ${tree[key]}`);
+    fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level)}${key}: ${tree[key]}`));
     return undefined;
   });
   if (level !== 1) {
-    console.log(`${whitespaces.repeat(level - 1)}}`);
+    fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level - 1)}}`));
   }
   return undefined;
 };
 
 const stylish = (tree) => {
-  console.log('{');
+  fs.writeFileSync('../__fixtures__/result', '{');
   printDiffTree(tree);
-  console.log('}');
+  fs.appendFileSync('../__fixtures__/result', makeStr('}'));
+  console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
 
 export { printDiff, stylish };
