@@ -1,6 +1,7 @@
 
 import { generateRecursiveDiff } from '../src/comparator';
-import { stylish, plain } from '../src/printer';
+import stylish from '../src/formatters/stylish';
+import plain from '../src/formatters/plain';
 import makePath from '../src/pathMaker';
 
 const fs = require('fs');
