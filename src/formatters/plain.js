@@ -15,7 +15,7 @@ const makeValue = (tree, key) => {
   return `${tree[key]}`;
 };
 
-const plain = (tree) => {
+const makePlainDiff = (tree) => {
   fs.writeFileSync(resultFilePath, '');
 
   const iter = (data, path = '') => {
@@ -61,6 +61,11 @@ const plain = (tree) => {
     });
   };
   return iter(tree);
+};
+
+const plain = (tree) => {
+  makePlainDiff(tree);
+  console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
 
 export default plain;
