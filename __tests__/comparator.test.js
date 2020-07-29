@@ -1,6 +1,6 @@
 
 import { generateRecursiveDiff } from '../src/comparator';
-import { stylish } from '../src/printer';
+import { stylish, plain } from '../src/printer';
 import makePath from '../src/pathMaker';
 
 const fs = require('fs');
@@ -8,7 +8,8 @@ const fs = require('fs');
 const expected1 = fs.readFileSync(makePath('testSample-1'), 'ascii');
 const expected2 = fs.readFileSync(makePath('testSample-2'), 'ascii');
 const expected3 = fs.readFileSync(makePath('testSample-3'), 'ascii');
-const expected4 = fs.readFileSync(makePath('testTreeSample'), 'ascii');
+const expectedStylish = fs.readFileSync(makePath('testTreeSample'), 'ascii');
+const expectedPlain = fs.readFileSync(makePath('testPlainFormat'), 'ascii');
 
 const readResultFile = () => fs.readFileSync(makePath('result'), 'ascii');
 
@@ -23,7 +24,7 @@ test('diff_JSON', () => {
   expect(readResultFile()).toEqual(expected3);
 
   stylish(generateRecursiveDiff(makePath('before-tree.json'), makePath('after-tree.json')));
-  expect(readResultFile()).toEqual(expected4);
+  expect(readResultFile()).toEqual(expectedStylish);
 });
 
 test('diff_yaml', () => {
@@ -46,4 +47,9 @@ test('diff_ini', () => {
 
   stylish(generateRecursiveDiff(makePath('before.ini'), makePath('after.ini')));
   expect(readResultFile()).toEqual(expected3);
+});
+
+test('plain_diff', () => {
+  plain(generateRecursiveDiff(makePath('before-tree.json'), makePath('after-tree.json')));
+  expect(readResultFile()).toEqual(expectedPlain);
 });
