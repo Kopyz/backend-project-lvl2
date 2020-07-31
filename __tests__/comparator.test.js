@@ -12,7 +12,7 @@ const expected2 = fs.readFileSync(makePath('testSample-2'), 'ascii');
 const expected3 = fs.readFileSync(makePath('testSample-3'), 'ascii');
 const expectedStylish = fs.readFileSync(makePath('testTreeSample'), 'ascii');
 const expectedPlain = fs.readFileSync(makePath('testPlainFormat'), 'ascii');
-const expectedJSON = fs.readFileSync(makePath('testJsonoutput'), 'ascii');
+const expectedJSON = fs.readFileSync(makePath('testJsonOutput'), 'ascii');
 
 const readResultFile = () => fs.readFileSync(makePath('result'), 'ascii');
 
