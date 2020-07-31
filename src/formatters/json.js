@@ -19,7 +19,8 @@ const removeExtraSpace = (tree) => {
 
 const makeJsonResult = (tree) => {
   const data = JSON.stringify(removeExtraSpace(tree));
-  console.log(fs.writeFileSync(resultFilePath, data));
+  fs.writeFileSync(resultFilePath, data);
+  console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
 
 export default makeJsonResult;
