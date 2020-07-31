@@ -52,3 +52,66 @@ verbose=true
 host=hexlet.io
 ```
 [![asciicast](https://asciinema.org/a/1WSgDf1V6mrrlAsom8KlrNV9M.png)](https://asciinema.org/a/1WSgDf1V6mrrlAsom8KlrNV9M)
+
+4. Difference between tree data structure **before-tree.json**
+```
+{
+  "common": {
+    "setting1": "Value 1",
+    "setting2": 200,
+    "setting3": true,
+    "setting6": {
+      "key": "value"
+    }
+  },
+  "group1": {
+    "baz": "bas",
+    "foo": "bar",
+    "nest": {
+      "key": "value"
+    }
+  },
+  "group2": {
+    "abc": 12345
+  }
+}
+```
+   and **after-tree.json**
+```
+{
+  "common": {
+    "follow": false,
+    "setting1": "Value 1",
+    "setting3": {
+      "key": "value"
+    },
+    "setting4": "blah blah",
+    "setting5": {
+      "key5": "value5"
+    },
+    "setting6": {
+      "key": "value",
+      "ops": "vops"
+    }
+  },
+
+  "group1": {
+    "foo": "bar",
+    "baz": "bars",
+    "nest": "str"
+  },
+
+  "group3": {
+    "fee": 100500
+  }
+}
+```
+[![asciicast](https://asciinema.org/a/6HU1NS8yom6kA6ZKUPbbUE69X.png)](https://asciinema.org/a/6HU1NS8yom6kA6ZKUPbbUE69X)
+
+5. You can change output data format on **plain** ``gendiff -f plain <file1> <file2>``
+
+[![asciicast](https://asciinema.org/a/9xgDibJXCPd9STnl4kO6spGwz.png)](https://asciinema.org/a/9xgDibJXCPd9STnl4kO6spGwz)
+
+  or on **json** ``gendiff -f json <file1> <file2>``
+
+[![asciicast](https://asciinema.org/a/9xgDibJXCPd9STnl4kO6spGwz.png)](https://asciinema.org/a/9xgDibJXCPd9STnl4kO6spGwz)
