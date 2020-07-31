@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import generateRecursiveDiff from '../comparator';
 import getFixturePath from '../pathMaker';
 
 const fs = require('fs');
