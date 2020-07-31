@@ -19,8 +19,7 @@ const removeExtraSpace = (tree) => {
 };
 
 const makeJsonResult = (tree) => {
-  const diff = generateRecursiveDiff(tree);
-  const data = JSON.stringify(removeExtraSpace(diff));
+  const data = JSON.stringify(removeExtraSpace(tree));
   fs.writeFileSync(resultFilePath, data);
 };
 
