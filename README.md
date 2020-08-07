@@ -114,4 +114,4 @@ host=hexlet.io
 
   or on **json** ``gendiff -f json <file1> <file2>``
 
-[![asciicast](https://asciinema.org/a/xjPGck0Nr2zq7atplrycE1sad.png)](https://asciinema.org/a/xjPGck0Nr2zq7atplrycE1sad)
+[![asciicast](https://asciinema.org/a/Yt3KRct87ZlS56Y0uYkBYf9vx.png)](https://asciinema.org/a/Yt3KRct87ZlS56Y0uYkBYf9vx)
