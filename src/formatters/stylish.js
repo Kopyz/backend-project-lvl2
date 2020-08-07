@@ -5,29 +5,65 @@ const fs = require('fs');
 
 const resultFilePath = getFixturePath('result');
 
-const makeStr = (str) => `\n${str}`;
+const selector = (type) => {
+  switch (type) {
+    case 'add': return ['+', 'current value'];
+    case 'remove': return ['-', 'previous value'];
+    case 'unchange': return [' ', 'current value'];
+    default: return ['+-', 'c'];
+  }
+};
 
-const printDiffTree = (tree, level = 1) => {
-  const keys = Object.keys(tree);
-  const whitespaces = '  ';
-  keys.map((key) => {
-    if (_.isObject(tree[key])) {
-      fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level)}${key}: {`));
-      return printDiffTree(tree[key], level + 2);
+const printDiffTree = (data, level = 1) => {
+  data.map((node) => {
+    const { name, type } = node;
+    const whitespaces = '  ';
+    const currentValue = node['current value'];
+    const previousValue = node['previous value'];
+    const [prefix, valueSelector] = selector(type);
+    const value = node[valueSelector];
+
+    if (type === 'update') {
+      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}+ ${name}: `);
+
+      if (_.isArray(currentValue)) {
+        fs.appendFileSync(resultFilePath, '{');
+        printDiffTree(currentValue, level + 2);
+
+        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
+      } else {
+        fs.appendFileSync(resultFilePath, `${currentValue}`);
+      }
+
+      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}- ${name}: `);
+
+      if (_.isArray(previousValue)) {
+        fs.appendFileSync(resultFilePath, '{');
+        printDiffTree(previousValue, level + 2);
+
+        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
+      } else {
+        fs.appendFileSync(resultFilePath, `${previousValue}`);
+      }
+    } else {
+      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}${prefix} ${name}: `);
+
+      if (_.isArray(value)) {
+        fs.appendFileSync(resultFilePath, '{');
+        printDiffTree(value, level + 2);
+        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
+      } else {
+        fs.appendFileSync(resultFilePath, `${value}`);
+      }
     }
-    fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level)}${key}: ${tree[key]}`));
     return undefined;
   });
-  if (level !== 1) {
-    fs.appendFileSync(resultFilePath, makeStr(`${whitespaces.repeat(level - 1)}}`));
-  }
-  return undefined;
 };
 
 const stylish = (tree) => {
   fs.writeFileSync(resultFilePath, '{');
   printDiffTree(tree);
-  fs.appendFileSync(resultFilePath, makeStr('}'));
+  fs.appendFileSync(resultFilePath, '\n}');
   console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
 

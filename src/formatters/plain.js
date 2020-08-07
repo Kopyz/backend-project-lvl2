@@ -5,65 +5,50 @@ const fs = require('fs');
 
 const resultFilePath = getFixturePath('result');
 
-const makeValue = (tree, key) => {
-  if (_.isObject(tree[key])) {
+const makeValue = (value) => {
+  if (_.isArray(value)) {
     return '[complex value]';
   }
-  if (_.isString(tree[key])) {
-    return `'${tree[key]}'`;
+  if (_.isString(value)) {
+    return `'${value}'`;
   }
-  return `${tree[key]}`;
+  return `${value}`;
 };
 
 const makePlainDiff = (tree) => {
-  fs.writeFileSync(resultFilePath, '');
-
   const iter = (data, path = '') => {
-    const keys = Object.keys(data);
-    let outputLine = '';
-    const newData = { ...data };
-    keys.map((key) => {
-      if (newData[key] === undefined) {
-        return undefined;
-      }
-
-      const [status, name = status] = key.trim().split(' ');
-
+    data.map((node) => {
+      const { name, type } = node;
+      const currentValue = node['current value'];
+      const previousValue = node['previous value'];
       const newPath = (path === '') ? `${name}` : `${path}.${name}`;
-
-
-      if (status === '+') {
-        if (keys.indexOf(`- ${name}`) !== -1) {
-          outputLine = `Property '${newPath}' was updated. From ${makeValue(newData, `- ${name}`)} to ${makeValue(newData, `${key}`)}\n`;
-          fs.appendFileSync(resultFilePath, outputLine);
-          newData[`- ${name}`] = undefined;
-          return undefined;
-        }
-        outputLine = `Property '${newPath}' was added with value: ${makeValue(newData, `${key}`)}\n`;
+      let outputLine = '';
+      if (type === 'update') {
+        outputLine = `Property '${newPath}' was updated. From ${makeValue(previousValue)} to ${makeValue(currentValue)}\n`;
         fs.appendFileSync(resultFilePath, outputLine);
         return undefined;
       }
-      if (status === '-') {
-        if (keys.indexOf(`+ ${name}`) !== -1) {
-          outputLine = `Property '${newPath}' was updated. From ${makeValue(newData, `- ${name}`)} to ${makeValue(newData, `+ ${name}`)}\n`;
-          fs.appendFileSync(resultFilePath, outputLine);
-          newData[`+ ${name}`] = undefined;
-          return undefined;
-        }
+      if (type === 'add') {
+        outputLine = `Property '${newPath}' was added with value: ${makeValue(currentValue)}\n`;
+        fs.appendFileSync(resultFilePath, outputLine);
+        return undefined;
+      }
+      if (type === 'remove') {
         outputLine = `Property '${newPath}' was removed\n`;
         fs.appendFileSync(resultFilePath, outputLine);
         return undefined;
       }
-      if (!_.isObject(newData[key])) {
+      if (!_.isArray(currentValue)) {
         return undefined;
       }
-      return iter(newData[key], `${newPath}`);
+      return iter(currentValue, `${newPath}`);
     });
   };
   return iter(tree);
 };
 
 const plain = (tree) => {
+  fs.writeFileSync(resultFilePath, '');
   makePlainDiff(tree);
   console.log(fs.readFileSync(resultFilePath, 'ascii'));
 };
