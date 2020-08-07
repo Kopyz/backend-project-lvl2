@@ -1,5 +1,5 @@
 
-import { generateRecursiveDiff } from '../src/comparator';
+import generateRecursiveDiff from '../src/comparator';
 import stylish from '../src/formatters/stylish';
 import plain from '../src/formatters/plain';
 import json from '../src/formatters/json';
