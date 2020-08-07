@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { generateRecursiveDiff } from '../comparator';
+import generateRecursiveDiff from '../comparator';
 import printOutput from '../formatters/index.js';
 
 const program = require('commander');
