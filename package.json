@@ -8,6 +8,7 @@
   "engines": {
     "node": ">=14"
   },
+  "type": "module",
   "scripts": {
     "test": "npx -n --experimental-vm-modules jest"
   },
