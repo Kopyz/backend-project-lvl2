@@ -1,13 +1,20 @@
-const yaml = require('js-yaml');
-const path = require('path');
-const fs = require('fs');
-const ini = require('ini');
-const process = require('process');
+import yaml from 'js-yaml';
+import path from 'path';
+import fs from 'fs';
+import ini from 'ini';
+import process from 'process';
 
-const parse = (file) => {
-  const format = path.extname(file);
+const makeAbsolutePath = (fileName) => {
   const currentDir = process.cwd();
-  const absolutePathFile = path.resolve(currentDir, file);
+  const absolutePathFile = path.resolve(currentDir, fileName);
+  return absolutePathFile;
+};
+
+const defineFileFormat = (fileName) => path.extname(fileName);
+
+const parse = (fileName) => {
+  const format = defineFileFormat(fileName);
+  const absolutePathFile = makeAbsolutePath(fileName);
 
   if (format === '.json') {
     return JSON.parse(fs.readFileSync(absolutePathFile, 'ascii'));
