@@ -3,7 +3,7 @@
   "version": "0.9.0",
   "description": "Compares two configuration files and shows a differnce.",
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "src/bin/gendiff.js"
   },
   "engines": {
     "node": ">=14"
