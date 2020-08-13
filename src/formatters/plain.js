@@ -1,12 +1,8 @@
 import _ from 'lodash';
-import getFixturePath from '../pathMaker';
-
-const fs = require('fs');
-
-const resultFilePath = getFixturePath('result');
+import generateRecursiveDiff from '../comparator';
 
 const makeValue = (value) => {
-  if (_.isArray(value)) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
   if (_.isString(value)) {
@@ -15,42 +11,34 @@ const makeValue = (value) => {
   return `${value}`;
 };
 
-const makePlainDiff = (tree) => {
-  const iter = (data, path = '') => {
-    data.map((node) => {
+const makePlainDiff = (data) => {
+  const iter = (nodes, path = '') => {
+    const result = nodes.reduce((acc, node) => {
       const { name, type } = node;
-      const currentValue = node['current value'];
-      const previousValue = node['previous value'];
       const newPath = (path === '') ? `${name}` : `${path}.${name}`;
-      let outputLine = '';
+      let outputLine = acc;
       if (type === 'update') {
-        outputLine = `Property '${newPath}' was updated. From ${makeValue(previousValue)} to ${makeValue(currentValue)}\n`;
-        fs.appendFileSync(resultFilePath, outputLine);
-        return undefined;
+        outputLine = `${outputLine}Property '${newPath}' was updated. From ${makeValue(node.valueBefore)} to ${makeValue(node.valueAfter)}\n`;
       }
       if (type === 'add') {
-        outputLine = `Property '${newPath}' was added with value: ${makeValue(currentValue)}\n`;
-        fs.appendFileSync(resultFilePath, outputLine);
-        return undefined;
+        outputLine = `${outputLine}Property '${newPath}' was added with value: ${makeValue(node.valueAfter)}\n`;
       }
       if (type === 'remove') {
-        outputLine = `Property '${newPath}' was removed\n`;
-        fs.appendFileSync(resultFilePath, outputLine);
-        return undefined;
+        outputLine = `${outputLine}Property '${newPath}' was removed\n`;
       }
-      if (!_.isArray(currentValue)) {
-        return undefined;
+      if (type === 'branch') {
+        return `${outputLine}${iter(node.children, `${newPath}`)}`;
       }
-      return iter(currentValue, `${newPath}`);
-    });
+      return outputLine;
+    }, '');
+    return result;
   };
-  return iter(tree);
+  return iter(data);
 };
 
-const plain = (tree) => {
-  fs.writeFileSync(resultFilePath, '');
-  makePlainDiff(tree);
-  console.log(fs.readFileSync(resultFilePath, 'ascii'));
+const plain = (filePath1, filePath2) => {
+  const diff = generateRecursiveDiff(filePath1, filePath2);
+  return makePlainDiff(diff);
 };
 
 export default plain;

@@ -1,70 +1,49 @@
 import _ from 'lodash';
-import getFixturePath from '../pathMaker';
+import generateRecursiveDiff from '../comparator';
 
-const fs = require('fs');
+const makeGap = (iterations) => '  '.repeat(iterations);
 
-const resultFilePath = getFixturePath('result');
-
-const selector = (type) => {
-  switch (type) {
-    case 'add': return ['+', 'current value'];
-    case 'remove': return ['-', 'previous value'];
-    case 'unchange': return [' ', 'current value'];
-    default: return ['+-', 'c'];
+const printValue = (value, gap) => {
+  if (_.isObject(value)) {
+    const keys = Object.keys(value);
+    let result = '{\n';
+    keys.forEach((key) => {
+      result = `${result}${makeGap(gap + 2)}${key}: ${value[key]}\n`;
+    });
+    result = `${result}${makeGap(gap + 1)}}`;
+    return result;
   }
+  return value;
 };
 
-const printDiffTree = (data, level = 1) => {
-  data.map((node) => {
+const makeStylishDiff = (data, level = 1) => {
+  const result = data.reduce((acc, node) => {
     const { name, type } = node;
-    const whitespaces = '  ';
-    const currentValue = node['current value'];
-    const previousValue = node['previous value'];
-    const [prefix, valueSelector] = selector(type);
-    const value = node[valueSelector];
-
-    if (type === 'update') {
-      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}+ ${name}: `);
-
-      if (_.isArray(currentValue)) {
-        fs.appendFileSync(resultFilePath, '{');
-        printDiffTree(currentValue, level + 2);
-
-        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
-      } else {
-        fs.appendFileSync(resultFilePath, `${currentValue}`);
-      }
-
-      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}- ${name}: `);
-
-      if (_.isArray(previousValue)) {
-        fs.appendFileSync(resultFilePath, '{');
-        printDiffTree(previousValue, level + 2);
-
-        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
-      } else {
-        fs.appendFileSync(resultFilePath, `${previousValue}`);
-      }
-    } else {
-      fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level)}${prefix} ${name}: `);
-
-      if (_.isArray(value)) {
-        fs.appendFileSync(resultFilePath, '{');
-        printDiffTree(value, level + 2);
-        fs.appendFileSync(resultFilePath, `\n${whitespaces.repeat(level + 1)}}`);
-      } else {
-        fs.appendFileSync(resultFilePath, `${value}`);
-      }
+    let outputLine = acc;
+    if (type === 'add') {
+      outputLine = `${outputLine}${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
     }
-    return undefined;
-  });
+    if (type === 'remove') {
+      outputLine = `${outputLine}${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
+    }
+    if (type === 'unchange') {
+      outputLine = `${outputLine}${makeGap(level)}  ${name}: ${printValue(node.valueAfter, level)}\n`;
+    }
+    if (type === 'update') {
+      outputLine = `${outputLine}${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
+      outputLine = `${outputLine}${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
+    }
+    if (type === 'branch') {
+      outputLine = `${outputLine}${makeGap(level)}  ${name}: {\n${makeStylishDiff(node.children, level + 2)}${makeGap(level + 1)}}\n`;
+    }
+    return outputLine;
+  }, '');
+  return result;
 };
 
-const stylish = (tree) => {
-  fs.writeFileSync(resultFilePath, '{');
-  printDiffTree(tree);
-  fs.appendFileSync(resultFilePath, '\n}');
-  console.log(fs.readFileSync(resultFilePath, 'ascii'));
+const stylish = (filePath1, filePath2) => {
+  const diff = generateRecursiveDiff(filePath1, filePath2);
+  return `{\n${makeStylishDiff(diff)}\n}`;
 };
 
 export default stylish;

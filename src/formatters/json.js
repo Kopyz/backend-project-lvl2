@@ -1,13 +1,10 @@
-import getFixturePath from '../pathMaker';
+import generateRecursiveDiff from '../comparator';
 
-const fs = require('fs');
+const makeJsonDiff = (data) => `${JSON.stringify(data)}`;
 
-const resultFilePath = getFixturePath('result');
-
-const makeJsonResult = (tree) => {
-  const data = JSON.stringify(tree);
-  fs.writeFileSync(resultFilePath, data);
-  console.log(fs.readFileSync(resultFilePath, 'ascii'));
+const json = (filePath1, filePath2) => {
+  const diff = generateRecursiveDiff(filePath1, filePath2);
+  return makeJsonDiff(diff);
 };
 
-export default makeJsonResult;
+export default json;
