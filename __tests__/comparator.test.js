@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import stylish from '../src/formatters/stylish';
 import plain from '../src/formatters/plain';
 import json from '../src/formatters/json';

@@ -1,8 +1,8 @@
-import yaml from 'js-yaml';
-import path from 'path';
-import fs from 'fs';
-import ini from 'ini';
-import process from 'process';
+import * as yaml from 'js-yaml';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as ini from 'ini';
+import * as process from 'process';
 
 const makeAbsolutePath = (fileName) => {
   const currentDir = process.cwd();
