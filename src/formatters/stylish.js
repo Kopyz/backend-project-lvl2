@@ -43,7 +43,7 @@ const makeStylishDiff = (data, level = 1) => {
 
 const stylish = (filePath1, filePath2) => {
   const diff = generateRecursiveDiff(filePath1, filePath2);
-  return `{\n${makeStylishDiff(diff)}\n}`;
+  return `{\n${makeStylishDiff(diff)}}`;
 };
 
 export default stylish;
