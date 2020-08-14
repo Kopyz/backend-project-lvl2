@@ -8,7 +8,7 @@ const printValue = (value, gap) => {
     const keys = Object.keys(value);
     let result = '{\n';
     keys.forEach((key) => {
-      result = `${result}${makeGap(gap + 2)}${key}: ${value[key]}\n`;
+      result = `${result}${makeGap(gap + 3)}${key}: ${value[key]}\n`;
     });
     result = `${result}${makeGap(gap + 1)}}`;
     return result;
