@@ -1,49 +1,40 @@
 import _ from 'lodash';
-import generateRecursiveDiff from '../comparator';
 
 const makeGap = (iterations) => '  '.repeat(iterations);
 
 const printValue = (value, gap) => {
   if (_.isObject(value)) {
     const keys = Object.keys(value);
-    let result = '{\n';
-    keys.forEach((key) => {
-      result = `${result}${makeGap(gap + 3)}${key}: ${value[key]}\n`;
-    });
-    result = `${result}${makeGap(gap + 1)}}`;
-    return result;
+    const result = keys.map((key) => `${makeGap(gap + 3)}${key}: ${value[key]}\n`);
+    return ['{\n', ...result, `${makeGap(gap + 1)}}`].join('');
   }
   return value;
 };
 
-const makeStylishDiff = (data, level = 1) => {
-  const result = data.reduce((acc, node) => {
-    const { name, type } = node;
-    let outputLine = acc;
-    if (type === 'add') {
-      outputLine = `${outputLine}${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
-    }
-    if (type === 'remove') {
-      outputLine = `${outputLine}${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
-    }
-    if (type === 'unchange') {
-      outputLine = `${outputLine}${makeGap(level)}  ${name}: ${printValue(node.valueAfter, level)}\n`;
-    }
-    if (type === 'update') {
-      outputLine = `${outputLine}${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
-      outputLine = `${outputLine}${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
-    }
-    if (type === 'branch') {
-      outputLine = `${outputLine}${makeGap(level)}  ${name}: {\n${makeStylishDiff(node.children, level + 2)}${makeGap(level + 1)}}\n`;
-    }
-    return outputLine;
-  }, '');
-  return result;
+const makeStylishDiff = (rawDiff) => {
+  const iter = (data, level = 1) => {
+    const result = _.map(data, (node) => {
+      const { name, type } = node;
+      if (type === 'add') {
+        return `${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
+      }
+      if (type === 'remove') {
+        return `${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
+      }
+      if (type === 'unchange') {
+        return `${makeGap(level)}  ${name}: ${printValue(node.valueAfter, level)}\n`;
+      }
+      if (type === 'update') {
+        return `${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
+      }
+      if (type === 'branch') {
+        return `${makeGap(level)}  ${name}: {\n${iter(node.children, level + 2)}${makeGap(level + 1)}}\n`;
+      }
+      return '';
+    });
+    return result.join('');
+  };
+  return `{\n${iter(rawDiff)}}`;
 };
 
-const stylish = (filePath1, filePath2) => {
-  const diff = generateRecursiveDiff(filePath1, filePath2);
-  return `{\n${makeStylishDiff(diff)}}`;
-};
-
-export default stylish;
+export default makeStylishDiff;

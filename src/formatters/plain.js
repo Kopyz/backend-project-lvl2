@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import generateRecursiveDiff from '../comparator';
 
 const makeValue = (value) => {
   if (_.isObject(value)) {
@@ -8,37 +7,32 @@ const makeValue = (value) => {
   if (_.isString(value)) {
     return `'${value}'`;
   }
-  return `${value}`;
+  return value;
 };
 
-const makePlainDiff = (data) => {
+const makePlainDiff = (rawDiff) => {
   const iter = (nodes, path = '') => {
-    const result = nodes.reduce((acc, node) => {
+    const result = _.map(nodes, (node) => {
       const { name, type } = node;
-      const newPath = (path === '') ? `${name}` : `${path}.${name}`;
-      let outputLine = acc;
+      const newPath = (path === '') ? name : `${path}.${name}`;
+
       if (type === 'update') {
-        outputLine = `${outputLine}Property '${newPath}' was updated. From ${makeValue(node.valueBefore)} to ${makeValue(node.valueAfter)}\n`;
+        return `Property '${newPath}' was updated. From ${makeValue(node.valueBefore)} to ${makeValue(node.valueAfter)}\n`;
       }
       if (type === 'add') {
-        outputLine = `${outputLine}Property '${newPath}' was added with value: ${makeValue(node.valueAfter)}\n`;
+        return `Property '${newPath}' was added with value: ${makeValue(node.valueAfter)}\n`;
       }
       if (type === 'remove') {
-        outputLine = `${outputLine}Property '${newPath}' was removed\n`;
+        return `Property '${newPath}' was removed\n`;
       }
       if (type === 'branch') {
-        return `${outputLine}${iter(node.children, `${newPath}`)}`;
+        return `${iter(node.children, `${newPath}`)}`;
       }
-      return outputLine;
-    }, '');
-    return result;
+      return '';
+    });
+    return result.join('');
   };
-  return iter(data);
+  return iter(rawDiff);
 };
 
-const plain = (filePath1, filePath2) => {
-  const diff = generateRecursiveDiff(filePath1, filePath2);
-  return makePlainDiff(diff);
-};
-
-export default plain;
+export default makePlainDiff;
