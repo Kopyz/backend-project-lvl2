@@ -18,7 +18,7 @@ extensions.map((extension) => {
     [fileName1, fileName2, 'plain', 'testPlainFormat'],
     [fileName1, fileName2, 'json', 'testJsonFormat']])('diff(%s, %s, %s)',
     (data1, data2, format, testFile) => {
-      expect(assembleOutput(format, data1, data2)).toEqual(fs.readFileSync(makePath(testFile), 'ascii'));
+      expect(assembleOutput(format, makePath(data1), makePath(data2))).toEqual(fs.readFileSync(makePath(testFile), 'ascii'));
     });
   return undefined;
 });
