@@ -2,6 +2,7 @@
   "name": "backend-project-lvl2",
   "version": "0.9.0",
   "description": "Compares two configuration files and shows a differnce.",
+  "main": "src/index.js",
   "bin": {
     "gendiff": "src/bin/gendiff.js"
   },
