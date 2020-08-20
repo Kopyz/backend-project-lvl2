@@ -15,19 +15,19 @@ const makeStylishDiff = (rawDiff) => {
   const iter = (data, level = 1) => {
     const result = _.map(data, (node) => {
       const { name, type } = node;
-      if (type === 'add') {
-        return `${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n`;
+      if (type === 'added') {
+        return `${makeGap(level)}+ ${name}: ${printValue(node.value, level)}\n`;
       }
-      if (type === 'remove') {
-        return `${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
+      if (type === 'removed') {
+        return `${makeGap(level)}- ${name}: ${printValue(node.value, level)}\n`;
       }
-      if (type === 'unchange') {
-        return `${makeGap(level)}  ${name}: ${printValue(node.valueAfter, level)}\n`;
+      if (type === 'unchanged') {
+        return `${makeGap(level)}  ${name}: ${printValue(node.value, level)}\n`;
       }
-      if (type === 'update') {
+      if (type === 'updated') {
         return `${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
       }
-      if (type === 'branch') {
+      if (type === 'nested') {
         return `${makeGap(level)}  ${name}: {\n${iter(node.children, level + 2)}${makeGap(level + 1)}}\n`;
       }
       return '';

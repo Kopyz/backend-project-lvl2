@@ -10,19 +10,19 @@ const generateRecursiveDiff = (data1, data2) => {
     currentNode.name = key;
 
     if (!_.has(data2, key)) {
-      currentNode.type = 'remove';
-      currentNode.valueBefore = data1[key];
+      currentNode.type = 'removed';
+      currentNode.value = data1[key];
     } else if (!_.has(data1, key)) {
-      currentNode.type = 'add';
-      currentNode.valueAfter = data2[key];
+      currentNode.type = 'added';
+      currentNode.value = data2[key];
     } else if (_.isObject(data1[key]) && _.isObject(data2[key])) {
-      currentNode.type = 'branch';
+      currentNode.type = 'nested';
       currentNode.children = generateRecursiveDiff(data1[key], data2[key]);
     } else if (data1[key] === data2[key]) {
-      currentNode.type = 'unchange';
-      currentNode.valueAfter = data2[key];
+      currentNode.type = 'unchanged';
+      currentNode.value = data2[key];
     } else {
-      currentNode.type = 'update';
+      currentNode.type = 'updated';
       currentNode.valueAfter = data2[key];
       currentNode.valueBefore = data1[key];
     }

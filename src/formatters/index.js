@@ -12,5 +12,5 @@ export default (format) => {
   if (format === 'json') {
     return json;
   }
-  throw new Error('Unknown format');
+  throw new Error(`Unknown format: ${format}`);
 };

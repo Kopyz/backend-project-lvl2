@@ -1,22 +1,6 @@
 import yaml from 'js-yaml';
-import path from 'path';
-import fs from 'fs';
 import ini from 'ini';
-import process from 'process';
 import _ from 'lodash';
-
-const makeAbsolutePath = (fileName) => {
-  const currentDir = process.cwd();
-  const absolutePathFile = path.resolve(currentDir, fileName);
-  return absolutePathFile;
-};
-
-const defineFileFormat = (fileName) => path.extname(fileName);
-
-const readData = (fileName) => {
-  const absolutePathFile = makeAbsolutePath(fileName);
-  return fs.readFileSync(absolutePathFile, 'ascii');
-};
 
 const adjustNumber = (parsedIni) => {
   const keys = Object.keys(parsedIni);
@@ -46,7 +30,7 @@ const parse = (data, format) => {
   if (format === '.ini') {
     return adjustNumber(ini.parse(data));
   }
-  return null;
+  throw new Error(`Unknown format: ${format}`);
 };
 
-export { parse, readData, defineFileFormat };
+export default parse;

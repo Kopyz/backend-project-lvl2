@@ -16,16 +16,16 @@ const makePlainDiff = (rawDiff) => {
       const { name, type } = node;
       const newPath = (path === '') ? name : `${path}.${name}`;
 
-      if (type === 'update') {
+      if (type === 'updated') {
         return `Property '${newPath}' was updated. From ${makeValue(node.valueBefore)} to ${makeValue(node.valueAfter)}\n`;
       }
-      if (type === 'add') {
-        return `Property '${newPath}' was added with value: ${makeValue(node.valueAfter)}\n`;
+      if (type === 'added') {
+        return `Property '${newPath}' was added with value: ${makeValue(node.value)}\n`;
       }
-      if (type === 'remove') {
+      if (type === 'removed') {
         return `Property '${newPath}' was removed\n`;
       }
-      if (type === 'branch') {
+      if (type === 'nested') {
         return `${iter(node.children, `${newPath}`)}`;
       }
       return '';

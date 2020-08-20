@@ -8,6 +8,6 @@ program
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format [type]', 'output format', 'stylish')
   .action((filepath1, filepath2) => {
-    console.log(assembleOutput(program.format, filepath1, filepath2));
+    console.log(assembleOutput(filepath1, filepath2, program.format));
   })
   .parse(process.argv);

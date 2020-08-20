@@ -8,17 +8,20 @@ const __dirname = path.dirname(__filename);
 
 const makePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-const extensions = ['json', 'ini', 'yaml'];
+let testJsonFormat;
+let testStylishFormat;
+let testPlainFormat;
 
-extensions.map((extension) => {
-  const fileName1 = `before.${extension}`;
-  const fileName2 = `after.${extension}`;
+beforeAll(() => {
+  testStylishFormat = fs.readFileSync(makePath('testStylishFormat'), 'ascii');
+  testPlainFormat = fs.readFileSync(makePath('testPlainFormat'), 'ascii');
+  testJsonFormat = fs.readFileSync(makePath('testJsonFormat'), 'ascii');
+});
 
-  test.each([[fileName1, fileName2, 'stylish', 'testStylishFormat'],
-    [fileName1, fileName2, 'plain', 'testPlainFormat'],
-    [fileName1, fileName2, 'json', 'testJsonFormat']])('diff(%s, %s, %s)',
-    (data1, data2, format, testFile) => {
-      expect(assembleOutput(format, makePath(data1), makePath(data2))).toEqual(fs.readFileSync(makePath(testFile), 'ascii'));
-    });
-  return undefined;
+test.each([['before.json', 'after.json'],
+  ['before.ini', 'after.ini'],
+  ['before.yaml', 'after.yaml']])('diff(%s %s)', (fileName1, fileName2) => {
+  expect(assembleOutput(makePath(fileName1), makePath(fileName2), 'stylish')).toEqual(testStylishFormat);
+  expect(assembleOutput(makePath(fileName1), makePath(fileName2), 'plain')).toEqual(testPlainFormat);
+  expect(assembleOutput(makePath(fileName1), makePath(fileName2), 'json')).toEqual(testJsonFormat);
 });
