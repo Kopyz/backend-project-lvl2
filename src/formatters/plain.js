@@ -25,10 +25,7 @@ const makePlainDiff = (rawDiff) => {
       if (type === 'removed') {
         return `Property '${newPath}' was removed\n`;
       }
-      if (type === 'nested') {
-        return `${iter(node.children, `${newPath}`)}`;
-      }
-      return '';
+      return `${iter(node.children, `${newPath}`)}`;
     });
     return result.join('');
   };

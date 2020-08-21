@@ -27,10 +27,7 @@ const makeStylishDiff = (rawDiff) => {
       if (type === 'updated') {
         return `${makeGap(level)}+ ${name}: ${printValue(node.valueAfter, level)}\n${makeGap(level)}- ${name}: ${printValue(node.valueBefore, level)}\n`;
       }
-      if (type === 'nested') {
-        return `${makeGap(level)}  ${name}: {\n${iter(node.children, level + 2)}${makeGap(level + 1)}}\n`;
-      }
-      return '';
+      return `${makeGap(level)}  ${name}: {\n${iter(node.children, level + 2)}${makeGap(level + 1)}}\n`;
     });
     return result.join('');
   };
