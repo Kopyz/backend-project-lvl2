@@ -20,17 +20,17 @@ const adjustNumber = (parsedIni) => {
   return result;
 };
 
-const parse = (data, format) => {
-  if (format === '.json') {
+const parse = (data, contentFormat) => {
+  if (contentFormat === '.json') {
     return JSON.parse(data);
   }
-  if (format === '.yaml') {
+  if (contentFormat === '.yaml') {
     return yaml.safeLoad(data);
   }
-  if (format === '.ini') {
+  if (contentFormat === '.ini') {
     return adjustNumber(ini.parse(data));
   }
-  throw new Error(`Unknown format: ${format}`);
+  throw new Error(`Unknown file extension: ${contentFormat}`);
 };
 
 export default parse;
