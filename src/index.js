@@ -16,15 +16,15 @@ const readData = (fileName) => {
   return fs.readFileSync(absolutePathFile, 'ascii');
 };
 
-const getContentFormat = (fileName) => path.extname(fileName);
+const getDataFormat = (fileName) => path.extname(fileName).slice(1);
 
 export default (filePath1, filePath2, outputFormat = 'stylish') => {
   const data1 = readData(filePath1);
   const data2 = readData(filePath2);
-  const contentFormat1 = getContentFormat(filePath1);
-  const contentFormat2 = getContentFormat(filePath2);
-  const parsedData1 = parse(data1, contentFormat1);
-  const parsedData2 = parse(data2, contentFormat2);
+  const dataFormat1 = getDataFormat(filePath1);
+  const dataFormat2 = getDataFormat(filePath2);
+  const parsedData1 = parse(data1, dataFormat1);
+  const parsedData2 = parse(data2, dataFormat2);
   const rawDiff = generateDiff(parsedData1, parsedData2);
 
   return getFormattedDiff(outputFormat)(rawDiff);
